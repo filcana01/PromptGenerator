@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Generatore Documento App</title>
+<style>
+  :root {
+    --primary: #4361ee;
+    --primary-dark: #3a56d4;
+    --secondary: #7209b7;
+    --accent: #f72585;
+    --light: #f8f9fa;
+    --dark: #212529;
+    --gray: #6c757d;
+    --light-gray: #e9ecef;
+    --success: #4cc9f0;
+    --border-radius: 12px;
+    --box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+    --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--dark);
+    background-color: #f9fafb;
+    padding: 0;
+    margin: 0;
+  /*  overflow-x: hidden; */
+  }
+
+  .container {
+    max-width: 1200px;
+    /* width: 100%; */
+    margin: 0 auto;
+    padding: 0 20px;
+    /* box-sizing: border-box;
+    min-width: 0; */
+  }
+
+  header {
+    padding: 1.5rem 0;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .header-content {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .header-content > * {
+    min-width: 0;           
+    flex-shrink: 1;
+  }
+
+  .header-content img {
+    height: 50px;
+    width: auto;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .subtitle {
+    text-align: center;
+    font-size: 1.1rem;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .card {
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    transition: var(--transition);
+  }
+
+  .card:hover {
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  }
+
+  label {
+    display: block;
+    margin-top: 1.5rem;
+    font-weight: 600;
+    color: var(--dark);
+  }
+
+  label:first-of-type {
+    margin-top: 0;
+  }
+
+  input, textarea {
+    width: 100%;
+    padding: 14px 16px;
+    margin-top: 8px;
+    border: 1px solid var(--light-gray);
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: var(--transition);
+    background-color: #fcfcfc;
+  }
+
+  input:focus, textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 120px;
+    font-family: inherit;
+  }
+
+  .button-group {
+    display: flex;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  button {
+    padding: 14px 28px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  button svg {
+    margin-right: 8px;
+    width: 18px;
+    height: 18px;
+  }
+
+  #submit {
+    flex: 1;
+  }
+
+  #submit:hover {
+    background-color: #d8d8d8;
+  }
+
+  #downloadBtn:hover {
+    background-color: #d8d8d8;
+  }
+
+  #resetTemplateBtn:hover {
+    background-color: #d8d8d8;
+  }
+
+  #answer {
+    display: none;
+    margin-top: 2rem;
+  }
+
+  .section-title {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: var(--dark);
+    position: relative;
+    padding-bottom: 0.5rem;
+  }
+
+  /* Template Container Styling */
+  #templateContainer {
+    margin-top: 2rem;
+  }
+
+  #templateContainer details {
+    background: white;
+    border-radius: var(--border-radius);
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    transition: var(--transition);
+  }
+
+  #templateContainer details:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  }
+
+  #templateContainer details summary {
+    font-weight: 600;
+    padding: 1.5rem;
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.1rem;
+    color: var(--dark);
+  }
+
+  #templateContainer details summary::-webkit-details-marker {
+    display: none;
+  }
+
+  #templateContainer details[open] summary {
+    border-bottom: 1px solid var(--light-gray);
+    background-color: #f8f9fa;
+  }
+
+  #templateContainer details pre {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-family: 'Consolas', 'Monaco', monospace;
+    line-height: 1.5;
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+    margin: 0;
+  }
+
+  .copyBtn {
+    padding: 10px 18px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .copyBtn:hover {
+    background-color: #d8d8d8;
+  }
+
+  .example {
+    color: var(--gray);
+    font-size: 0.85rem;
+    margin-top: 6px;
+    font-style: italic;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .button-group {
+      flex-direction: column;
+    }
+    
+    button {
+      width: 100%;
+    }
+    
+    h1 {
+      font-size: 2rem;
+    }
+    
+    .card {
+      padding: 1.5rem;
+    }
+    
+    #templateContainer details summary {
+      padding: 1.2rem;
+      flex-direction: column;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    
+    .copyBtn {
+      align-self: flex-end;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .container {
+      padding: 0 15px;
+    }
+    
+    header {
+      padding: 1.5rem 0;
+    }
+    
+    h1 {
+      font-size: 1.8rem;
+    }
+    
+    .card {
+      padding: 1.2rem;
+    }
+    
+    input, textarea {
+      padding: 12px;
+    }
+    
+    #templateContainer details summary {
+      font-size: 1rem;
+      padding: 1rem;
+    }
+    
+    #templateContainer details pre {
+      padding: 1rem;
+    }
+    
+    .copyBtn {
+      padding: 8px 14px;
+      font-size: 0.85rem;
+    }
+  }
+
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <div class="header-content">
+      <div style="min-width: 100%; display: flex; align-items: center; justify-content: space-between;">
+        <div style="display: flex;align-items: center; gap: 1em;">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/USI_Logo.svg/1200px-USI_Logo.svg.png" alt="logo">
+          <h1>Rork App Prompt Generator</h1>
+        </div>
+        <h3>
+          <a href="History.html" style="text-decoration: none; color: black;">Storico</a>
+          |
+          <a href="Guide.html" style="text-decoration: none; color: black;">Guida all'utilizzo</a>
+        </h3>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <div class="card">
+    <form id="appForm">
+      <label for="nomeApp">Nome dell'applicazione:</label>
+      <input type="text" id="nomeApp" placeholder="Es. DataGenerator" required>
+
+      <label for="descrizione">Descrizione e scopo dell'applicazione:</label>
+      <textarea id="descrizione" rows="3" placeholder="Descrivi scopo / funzionalità principali" required></textarea>
+
+      <label for="requisiti">Elenco dei requisiti:</label>
+      <textarea id="requisiti" rows="6" placeholder="Incolla qui l'elenco dei requisiti (uno per riga o in forma puntata)" required></textarea>
+
+      <label for="nomeApp">Responsabile:</label>
+      <input type="text" id="nomeApp" placeholder="Es. Mario Rossi" required>
+
+      <div class="button-group">
+        <button type="submit" id="submit">
+          Genera Prompt
+        </button>
+        <button type="button" id="downloadBtn">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+          </svg>
+          Scarica .txt
+        </button>
+        <button type="button" id="resetTemplateBtn">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
+          Ripristina Template
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div id="answer" class="card">
+    <h2 class="section-title">Prompt Generato</h2>
+
+    <div id="templateContainer" aria-label="Template documento (capitoli)">
+      <details>
+        <summary>
+          FASE 1 - Raccolta dei requisiti
+          <button type="button" class="copyBtn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+            Copia
+          </button>
+        </summary>
+        <pre>
+Contesto:
+
+Sei uno sviluppatore esperto di React Native incaricato di creare un'applicazione mobile multipiattaforma.
+
+Descrizione dell'applicazione: [DescrizioneApplicazione].
+
+L'elenco dei requisiti attualmente identificati è il seguente (se esistente):
+
+[ElencoRequisiti]
+
+I tuoi compiti, prima di inziare con il codice, sono:
+
+• Leggere, analizzare e comprendere attentamente lo scopo del progetto ed i requisiti forniti.
+• Proporre nuovi requisiti che potrebbero essere interessanti da implementare.
+        </pre>
+      </details>
+
+      <details>
+        <summary>
+          FASE 2 - Creazione Frontend applicativo
+          <button type="button" class="copyBtn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+            Copia
+          </button>
+        </summary>
+        <pre>
+Questo è l'elenco dei requisiti completo per l'applicazione:
+
+[ElencoRequisiti]
+
+Adesso, procedi con la generazione del codice sorgente in React Native con un'architettura scalabile e mantenibile, utilizzando Javascript al posto di Typescript per scrivere i files. Il tuo scopo è quello di implementare le funzionalità principali elencate nell'elenco dei requisusti fornito. Non limitarti a generare codice, ma comportati come un tech lead che progetta l'intera applicazione, spiegando scelte architetturali e best practice.
+
+Caratteristiche grafiche da rispettare:
+
+• Design moderno e pulito, con colori coerenti, principalmente in bianco e nero
+• Interfaccia intuitiva con icone Lucide React Native
+• Totalmente responsive ed ottimizzato per Mobile e Desktop
+• Navigazione fluida tra le sezioni
+• Gestione errori tramite messaggi chiari ed user-friendly
+• Stile coerente per tutte le componenti dell'applicazione (Tab Navigation, Listing Cards, Search Bar, Home Screen, Filters Screen...)
+
+Output atteso:
+
+• Struttura delle cartelle del progetto.
+• Codice React Native dei componenti e delle funzionalità principali e necessarie. (Schermate, Navigatori, Form, Mappe, Dashboard...).
+</pre>
+      </details>
+
+      <details>
+        <summary>
+          FASE 3 - Creazione Script del DB
+          <button type="button" class="copyBtn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+            Copia
+          </button>
+        </summary>
+        <pre>
+Adesso, è il momento di generare una struttura di banca dati per l'applicativo con tabelle, campi ed i dovuti collegamenti. Conseguentemente elenca tutte le informazioni relative alle Tabelle ed ai campi che formano la struttura del database dell'applicativo. Infine, genera un file chiamato "database_schema.sql" che contiene lo script SQL di generazione DB.
+        </pre>
+      </details>
+
+      <details>
+        <summary>
+          FASE 4 - Creazione Models e Types
+          <button type="button" class="copyBtn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+            Copia
+          </button>
+        </summary>
+        <pre>
+Questa applicazione comunicherà con un Backend C# in ASP.NET Core che deve utilizzare chiamate GraphQL per recuperare i dati dal DB. Adesso andremo ad implementare il layer GraphQL in ASP.NET Core. Per identificare la struttura del DB con le tabelle ed i campi puoi fare riferimento al file "database_schema.sql".
+
+Per prima cosa, limitati a creare i Model files per tutte le tabelle del Progetto ed i loro corrispettivi Type files, ed inseriscili in due cartelle a parte del progetto chiamate "Models" e "Types".
+
+Esempio del contenuto di un Model:
+
+namespace [NomeDellApplicazione]API.Business.Model
+
+{
+    public class CategoryModel
+    {
+        public long Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string NameEn { get; set; } = string.Empty;
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    }
+}
+
+Esempio del contenuto di un Type:
+
+using [NomeDellApplicazione]API.Business.Model;
+namespace [NomeDellApplicazione]API.GraphQLModels.Type
+
+{
+    public class CategoryType : ObjectGraphType<CategoryModel>
+    {
+        public CategoryType()
+        {
+            Name = nameof(CategoryModel);
+            Field(x => x.Id);
+            Field(x => x.Name);
+            Field(x => x.NameEn);
+        }
+    }
+}
+
+Infine, per permettermi di agevolare il processo di copiatura del codice da te generato per i Models ed i Types, genera un file chiamato "files_template_generator.txt" che ha il seguente contenuto:
+
+cd .\[NomeDellApplicazione]API
+dotnet new class -n ClassModel -o ".\Business\Model"
+dotnet new class -n ClassType -o ".\GraphQLModels\Type"
+
+Ma al posto di ClassModel e ClassType elenca tutti i Models e Types che hai creato, ad esempio:
+
+cd .\[NomeDellApplicazione]API
+dotnet new class -n CategoryModel -o ".\Business\Model"
+dotnet new class -n ListingModel -o ".\Business\Model"
+...
+dotnet new class -n CategoryType -o ".\GraphQLModels\Type"
+dotnet new class -n ListingType -o ".\GraphQLModels\Type"
+...
+        </pre>
+      </details>
+<details>
+        <summary>
+          FASE 5 - Identificazione delle Query necessarie
+          <button type="button" class="copyBtn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+            Copia
+          </button>
+        </summary>
+        <pre>
+Prima di continuare con l'implementazione di GraphQL nel Backend in ASP.NET Core, è necessario individuare preventivamente una lista di query necessarie per il funzionamento dell'applicazione, ovvero le query che andranno inserite successivamente nella classe Query.cs che estende ObjectGraphType (parte della libreria GraphQL.NET che serve a definire quali dati possono essere richiesti tramite GraphQL e come vengono risolti). Di conseguenza, ti chiedo di condurre un'analisi delle funzionalità dell'applicativo, al fine di individuare una lista di query rilevanti.
+
+Esempio:
+
+Nome query - ListingByuser()
+Scopo - La query si occupa di recuperare tutti gli annunci (listing) di un utente (user) tramite lo UserId.
+Schermata - Profilo Utente
+...
+
+Output atteso:
+
+•  Lista completa delle query con una breve descrizione del loro scopo e a quale schermata dell'applicazione fanno riferimento.
+
+Accorgimenti:
+
+•  In questa fase non è necessario scrivere il contenuto delle query ma solo elencarle.
+•  Tutte le query devono avere un nome sensato ed il loro scopo deve essere chiaro e rilevante.
+
+        </pre>
+      </details>
+      <details>
+        <summary>
+          FASE 6 - Creazione Service.cs e Query.cs
+          <button type="button" class="copyBtn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+            Copia
+          </button>
+        </summary>
+        <pre>
+Successivamente, per continuare con l'implementazione di GraphQL nel Backend in ASP.NET Core, necessito la tua assistenza per la redazione dei seguenti files:
+
+• [NomeDellApplicazione]Service.cs - è una classe di servizio che implementa un'interfaccia (I[NomeDellApplicazione]Service) e fornisce metodi asincroni per recuperare dati da un database. È scritto in C# e fa parte di un'applicazione basata su ASP.NET Core.
+
+Esempio di una funzione contenuta nel file "[NomeDellApplicazione]Service.cs":
+
+    public async Task<List<CategoryModel>> GetCurrentCategory()
+    {
+
+        var list = await _dbContext.Categories.ToListAsync();
+        return list.Select(item => Utility.CopyPropertiesTo(item, new CategoryModel())).ToList();
+
+    }
+
+• Query.cs - è una classe che estende ObjectGraphType, parte della libreria GraphQL.NET e Serve a definire quali dati possono essere richiesti tramite GraphQL e come vengono risolti. Prima di ogni metodo creato deve essere presente un breve commento che ne spieghi lo scopo. La struttura è gia dichiarata nel file ed è la seguente:
+
+public class Query : ObjectGraphType
+{
+
+    private readonly IUserService _userService;
+    private readonly AuthenticatedUser? _user;
+    public Query(IServiceProvider serviceProvider)
+    {
+        Name = nameof(Query);
+        _userService = serviceProvider.GetRequiredService<IUserService>();
+        _user = _userService.GetCurrentUser();
+        AuthenticatedUser();
+        if (_user != null && !_user.HasPower("ACCESS"))
+        {
+            Settings();
+            return;
+        }
+        Test();
+        Settings();
+        GetDiscalimer();
+        GetOrganisationUnits();
+    }
+
+Esempio di contenuto di una funzione contenuta nel file "Query.cs":
+
+    private void Category()
+    {
+        Field<ListGraphType<CategoryType>>("Categories")
+            .ResolveAsync(async context =>
+            {
+                try
+                {
+                    IServiceProvider? serviceProvider = context.RequestServices;
+                    if (serviceProvider is not null)
+                    {
+
+                        return await serviceProvider.GetRequiredService<IHousingService>().GetCurrentCategory();
+                    }
+                }
+                catch (Exception e)
+                {
+                    context.Errors.Add(new ExecutionError(e.InnerException?.Message ?? e.Message));
+                }
+                return null;
+            });
+    }
+
+Accorgimenti:
+
+• Le query da implementare sono gia state in parte individuate in precedenza. Fai riferimento strettamente al file "query_list.md" che contiene l'elenco delle query da implementare
+
+        </pre>
+      </details>
+    </div>
+  </div>
+</main>
+
+<script>
+  document.getElementById('submit').addEventListener('click', function() {
+    document.getElementById('answer').style.display = 'block';
+  });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('appForm');
+    const outputEl = document.getElementById('output');
+    const templateContainer = document.getElementById('templateContainer');
+    const originalTemplateHTML = templateContainer.innerHTML;
+
+    function replacePlaceholdersInHTML(html, replacements) {
+      let out = html;
+      for (const key in replacements) {
+        out = out.split(key).join(replacements[key]);
+      }
+      return out;
+    }
+
+    function generateDocument(descr, requisiti, nomeApp) {
+      const replacements = {
+        '[DescrizioneApplicazione]': descr,
+        '[ElencoRequisiti]': requisiti.replace(/\n/g, '\n'),
+        '[NomeDellApplicazione]': nomeApp
+      };
+      templateContainer.innerHTML = originalTemplateHTML;
+      templateContainer.innerHTML = replacePlaceholdersInHTML(templateContainer.innerHTML, replacements);
+      const details = Array.from(templateContainer.querySelectorAll('details'));
+      const assembled = details.map(d => d.textContent.trim()).join('\n\n----------------------------------------\n\n');
+      return assembled;
+    }
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const DescrizioneApplicazione = document.getElementById('descrizione').value.trim();
+      const ElencoRequisiti = document.getElementById('requisiti').value.trim();
+      const NomeDellApplicazione = document.getElementById('nomeApp').value.trim();
+      const assembledText = generateDocument(DescrizioneApplicazione, ElencoRequisiti, NomeDellApplicazione);
+      outputEl.textContent = assembledText;
+    });
+
+    document.getElementById('downloadBtn').addEventListener('click', function() {
+      const text = outputEl.textContent.trim();
+      if (!text) {
+        alert('Nessun documento da scaricare. Genera il documento prima.');
+        return;
+      }
+      const nomeApp = document.getElementById('nomeApp').value.trim() || 'documento_app';
+      const filename = `${nomeApp.replace(/\s+/g, '_')}_document.txt`;
+      const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    });
+
+    document.getElementById('resetTemplateBtn').addEventListener('click', function() {
+      templateContainer.innerHTML = originalTemplateHTML;
+      outputEl.textContent = 'Template ripristinato. Compila il form e clicca "Genera Documento".';
+      attachCopyButtons();
+    });
+
+    // funzione per agganciare i bottoni copia
+    function attachCopyButtons() {
+      const copyButtons = document.querySelectorAll('.copyBtn');
+      copyButtons.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const pre = btn.closest('details').querySelector('pre');
+          if (pre) {
+            const text = pre.textContent.trim();
+            navigator.clipboard.writeText(text).then(() => {
+              btn.textContent = "Copiato!";
+              setTimeout(() => btn.textContent = "Copia", 1500);
+            });
+          }
+        });
+      });
+    }
+
+    attachCopyButtons();
+  });
+</script>
+
+</body>
+</html>

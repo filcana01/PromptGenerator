@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Storico Prompt - Generatore Documento App</title>
+    <style>
+      :root {
+        --primary: #4361ee;
+        --primary-dark: #3a56d4;
+        --secondary: #7209b7;
+        --accent: #f72585;
+        --light: #f8f9fa;
+        --dark: #212529;
+        --gray: #6c757d;
+        --light-gray: #e9ecef;
+        --success: #4cc9f0;
+        --border-radius: 12px;
+        --box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
+        --gradient: linear-gradient(
+          135deg,
+          var(--primary) 0%,
+          var(--secondary) 100%
+        );
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html,
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: var(--dark);
+        background-color: #f9fafb;
+        padding: 0;
+        margin: 0;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      header {
+        padding: 1.5rem 0;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .header-content {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .header-content > * {
+        min-width: 0;
+        flex-shrink: 1;
+      }
+
+      .header-content img {
+        height: 50px;
+        width: auto;
+      }
+
+      h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+
+      .subtitle {
+        text-align: center;
+        font-size: 1.1rem;
+        opacity: 0.9;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .card {
+        background: white;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        padding: 2rem;
+        margin-bottom: 2rem;
+        transition: var(--transition);
+      }
+
+      .card:hover {
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+      }
+
+      label {
+        display: block;
+        margin-top: 1.5rem;
+        font-weight: 600;
+        color: var(--dark);
+      }
+
+      label:first-of-type {
+        margin-top: 0;
+      }
+
+      input,
+      textarea {
+        width: 100%;
+        padding: 14px 16px;
+        margin-top: 8px;
+        border: 1px solid var(--light-gray);
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: var(--transition);
+        background-color: #fcfcfc;
+      }
+
+      input:focus,
+      textarea:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+      }
+
+      .button-group {
+        display: flex;
+        margin-top: 2rem;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      button {
+        padding: 14px 28px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        border: none;
+        border-radius: 8px;
+        transition: var(--transition);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      button svg {
+        margin-right: 8px;
+        width: 18px;
+        height: 18px;
+      }
+
+      .btn-primary {
+        background-color: var(--primary);
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background-color: var(--primary-dark);
+      }
+
+      .btn-secondary {
+        background-color: var(--secondary);
+        color: white;
+      }
+
+      .btn-secondary:hover {
+        background-color: #5e0a9c;
+      }
+
+      .section-title {
+        font-size: 1.8rem;
+        margin-bottom: 1.5rem;
+        color: var(--dark);
+        position: relative;
+        padding-bottom: 0.5rem;
+      }
+
+      /* Search bar styling */
+      .search-container {
+        margin-bottom: 2rem;
+        position: relative;
+      }
+
+      .search-icon {
+        position: absolute;
+        left: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--gray);
+      }
+
+      #searchInput {
+        padding-left: 45px;
+      }
+
+      /* Prompt list styling */
+      .prompt-item {
+        border: 1px solid var(--light-gray);
+        border-radius: var(--border-radius);
+        margin-bottom: 1rem;
+        overflow: hidden;
+        transition: var(--transition);
+      }
+
+      .prompt-item:hover {
+        border-color: var(--primary);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+      }
+
+      .prompt-header {
+        background-color: #f8f9fa;
+        padding: 1rem 1.5rem;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .prompt-title {
+        font-weight: 600;
+        font-size: 1.1rem;
+        color: var(--dark);
+      }
+
+      .prompt-date {
+        color: var(--gray);
+        font-size: 0.9rem;
+      }
+
+      .prompt-content {
+        padding: 1.5rem;
+        background-color: white;
+        display: none;
+      }
+
+      .prompt-content pre {
+        background: #f8f9fa;
+        padding: 1.5rem;
+        overflow-x: auto;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        font-family: "Consolas", "Monaco", monospace;
+        line-height: 1.5;
+        border-radius: var(--border-radius);
+        margin: 0;
+      }
+
+      .prompt-actions {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 1rem;
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: 3rem;
+        color: var(--gray);
+      }
+
+      .empty-state p {
+        margin-bottom: 1.5rem;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .button-group {
+          flex-direction: column;
+        }
+
+        button {
+          width: 100%;
+        }
+
+        h1 {
+          font-size: 2rem;
+        }
+
+        .card {
+          padding: 1.5rem;
+        }
+
+        .prompt-header {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 0.5rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .container {
+          padding: 0 15px;
+        }
+
+        header {
+          padding: 1.5rem 0;
+        }
+
+        h1 {
+          font-size: 1.8rem;
+        }
+
+        .card {
+          padding: 1.2rem;
+        }
+
+        input,
+        textarea {
+          padding: 12px;
+        }
+
+        .prompt-header {
+          padding: 1rem;
+        }
+
+        .prompt-content {
+          padding: 1rem;
+        }
+
+        .prompt-content pre {
+          padding: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <div class="header-content">
+          <div
+            style="
+              min-width: 100%;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+            "
+          >
+            <div style="display: flex; align-items: center; gap: 1em">
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/USI_Logo.svg/1200px-USI_Logo.svg.png"
+                alt="logo"
+              />
+              <h1>Rork App Prompt Generator</h1>
+            </div>
+            <h3>
+              <a
+                href="Prompter.html"
+                style="text-decoration: none; color: black"
+                >Home</a
+              >
+              |
+              <a href="Guide.html" style="text-decoration: none; color: black"
+                >Guida all'utilizzo</a
+              >
+            </h3>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <div class="card">
+        <h2 class="section-title">Storico Prompt Generati</h2>
+
+        <div class="search-container">
+          <svg
+            class="search-icon"
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Cerca per nome applicazione..."
+          />
+        </div>
+
+        <div id="promptList">
+          <!-- I prompt verranno caricati qui dinamicamente -->
+          <div class="empty-state">
+            <p>Nessun prompt generato ancora.</p>
+            <a href="index.html" class="btn-primary"
+              >Genera il tuo primo prompt</a
+            >
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const searchInput = document.getElementById("searchInput");
+        const promptList = document.getElementById("promptList");
+
+        // Funzione per caricare i prompt dall'archiviazione locale
+        function loadPrompts(searchTerm = "") {
+          const savedPrompts = JSON.parse(
+            localStorage.getItem("appPrompts") || "[]"
+          );
+
+          if (savedPrompts.length === 0) {
+            promptList.innerHTML = `
+          <div class="empty-state">
+            <p>Nessun prompt generato ancora.</p>
+            <a href="index.html" class="btn-primary">Genera il tuo primo prompt</a>
+          </div>
+        `;
+            return;
+          }
+
+          // Filtra i prompt in base al termine di ricerca
+          const filteredPrompts = searchTerm
+            ? savedPrompts.filter((prompt) =>
+                prompt.nomeApp.toLowerCase().includes(searchTerm.toLowerCase())
+              )
+            : savedPrompts;
+
+          if (filteredPrompts.length === 0) {
+            promptList.innerHTML = `
+          <div class="empty-state">
+            <p>Nessun prompt corrisponde alla ricerca.</p>
+          </div>
+        `;
+            return;
+          }
+
+          // Genera l'HTML per la lista dei prompt
+          promptList.innerHTML = filteredPrompts
+            .map((prompt, index) => {
+              const date = new Date(prompt.timestamp).toLocaleString("it-IT");
+
+              // Formatta il contenuto del prompt per la visualizzazione
+              const formattedContent = prompt.content
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/\n/g, "<br>");
+
+              return `
+          <div class="prompt-item">
+            <div class="prompt-header" onclick="togglePrompt(${index})">
+              <div class="prompt-title">${prompt.nomeApp}</div>
+              <div class="prompt-date">${date}</div>
+            </div>
+            <div class="prompt-content" id="prompt-${index}">
+              <pre>${formattedContent}</pre>
+              <div class="prompt-actions">
+                <button class="btn-primary" onclick="copyPrompt(${index})">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                    <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                  </svg>
+                  Copia
+                </button>
+                <button class="btn-secondary" onclick="deletePrompt(${index})">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="3 6 5 6 21 6"></polyline>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                  </svg>
+                  Elimina
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+            })
+            .join("");
+        }
+
+        // Funzione per mostrare/nascondere il contenuto di un prompt
+        window.togglePrompt = function (index) {
+          const content = document.getElementById(`prompt-${index}`);
+          if (content.style.display === "block") {
+            content.style.display = "none";
+          } else {
+            content.style.display = "block";
+          }
+        };
+
+        // Funzione per copiare un prompt negli appunti
+        window.copyPrompt = function (index) {
+          const savedPrompts = JSON.parse(
+            localStorage.getItem("appPrompts") || "[]"
+          );
+          const promptContent = savedPrompts[index].content;
+
+          navigator.clipboard
+            .writeText(promptContent)
+            .then(() => {
+              alert("Prompt copiato negli appunti!");
+            })
+            .catch((err) => {
+              console.error("Errore durante la copia:", err);
+              alert("Impossibile copiare il prompt.");
+            });
+        };
+
+        // Funzione per eliminare un prompt
+        window.deletePrompt = function (index) {
+          if (confirm("Sei sicuro di voler eliminare questo prompt?")) {
+            const savedPrompts = JSON.parse(
+              localStorage.getItem("appPrompts") || "[]"
+            );
+            savedPrompts.splice(index, 1);
+            localStorage.setItem("appPrompts", JSON.stringify(savedPrompts));
+            loadPrompts(searchInput.value);
+          }
+        };
+
+        // Gestione della ricerca in tempo reale
+        searchInput.addEventListener("input", function () {
+          loadPrompts(this.value);
+        });
+
+        // Carica i prompt all'avvio
+        loadPrompts();
+      });
+    </script>
+  </body>
+</html>

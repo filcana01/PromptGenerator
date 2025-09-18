@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Generatore Documento App</title>
+    <style>
+      :root {
+        --primary: #4361ee;
+        --primary-dark: #3a56d4;
+        --secondary: #7209b7;
+        --accent: #f72585;
+        --light: #f8f9fa;
+        --dark: #212529;
+        --gray: #6c757d;
+        --light-gray: #e9ecef;
+        --success: #4cc9f0;
+        --border-radius: 12px;
+        --box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
+        --gradient: linear-gradient(
+          135deg,
+          var(--primary) 0%,
+          var(--secondary) 100%
+        );
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html,
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: var(--dark);
+        background-color: #f9fafb;
+        padding: 0;
+        margin: 0;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      header {
+        padding: 1.5rem 0;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .header-content {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .header-content > * {
+        min-width: 0;
+        flex-shrink: 1;
+      }
+
+      .header-content img {
+        height: 50px;
+        width: auto;
+      }
+
+      h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+
+      .subtitle {
+        text-align: center;
+        font-size: 1.1rem;
+        opacity: 0.9;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .card {
+        background: white;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        padding: 2em;
+        margin-bottom: 0.5rem;
+        transition: var(--transition);
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        h1 {
+          font-size: 2rem;
+        }
+
+        @media (max-width: 480px) {
+          .container {
+            padding: 0 15px;
+          }
+
+          header {
+            padding: 1.5rem 0;
+          }
+
+          h1 {
+            font-size: 1.8rem;
+          }
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <div class="header-content">
+          <div
+            style="
+              min-width: 100%;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+            "
+          >
+            <div style="display: flex; align-items: center; gap: 1em">
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/USI_Logo.svg/1200px-USI_Logo.svg.png"
+                alt="logo"
+              />
+              <h1>Rork App Prompt Generator</h1>
+            </div>
+            <h3>
+              <a href="Home.html" style="text-decoration: none; color: black"
+                >Home
+              </a>
+              |
+              <a href="History.html" style="text-decoration: none; color: black"
+                >Storico
+              </a>
+            </h3>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="container" style="padding-bottom: 2em">
+      <div class="card">
+        <h3>Scopo:</h3>
+        <p>
+          USI Rork Prompt Generator è uno strumento progettato per aiutare
+          sviluppatori e project manager a creare documentazione tecnica
+          strutturata per lo sviluppo di applicazioni. Sfruttando i principi del
+          Prompt Engineering, il sistema utilizza un form per generare prompt
+          completi divisi in fasi di sviluppo, testati ed ottimizzati per essere
+          utilizzati con Rork. Lo scopo principale è quello di aumentare la
+          produttività fornendo una soluzione su misura per lo stack di sviluppo
+          USI, da implementare nella fase di avvio dello sviluppo, al fine di
+          evitare al programmatore di sprecare tempo ad eseguire task ripetitivi
+          o tediosi.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Form:</h3>
+        <p>
+          Tramite il formulario nella sezione
+          <a href="Prompter.html">Prompt Generator</a>, lo sviluppatore ha la
+          possibilità di impostare dei parametri che verrano utilizzati per la
+          stesura del prompt adeguato. Il modulo di input richiede il nome
+          dell'applicazione, una breve descrizione del suo scopo, l'elenco dei
+          requisiti ed il nome del responsabile del prompt.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Procedura:</h3>
+        <ol style="margin-left: 2vw">
+          <li>
+            Compilare tutti i campi del form con le informazioni del progetto.
+          </li>
+          <li>
+            Cliccare sul pulsante "Genera Prompt" per visualizzare i template.
+          </li>
+          <li>
+            Espandere le varie sezioni per visualizzare il prompt generato.
+          </li>
+          <li>
+            Utilizzare l'apposito pulsante "Copia" accanto a ogni sezione per
+            copiare il prompt specifico ed incollarlo su Rork.
+          </li>
+          <li>
+            Ogni prompt generato viene salvato nello
+            <a href="History.html">Storico</a> per eventuali usi futuri.
+          </li>
+        </ol>
+
+        <!-- scaricare l'intero documento con il pulsante "Scarica .txt" -->
+      </div>
+      <div class="card">
+        <h3>Consigli per l'utilizzo:</h3>
+
+        <ul style="margin-left: 2vw">
+          <li>
+            Svolgere sempre un controllo manuale al completamento di ogni fase
+            di sviluppo, l'AI non è infallibile.
+          </li>
+
+          <li>
+            Rispettare l'ordine previsto dalle fasi per garantire un risultato
+            ottimale, iniziando dalla prima fase e proseguendo step-by-step. È
+            comunque possibile omettere quelle fasi che per qualche motivo sono
+            gia state programmate.
+          </li>
+
+          <li>
+            Per l'utilizzo di un elenco dei requisiti particolarmente lungo o
+            complesso, è consigliabile utilizzare una formattazione chiara con
+            punti elenco ed organizzare i requisiti in ordine di priorità o per
+            aree funzionali.
+          </li>
+
+          <li>
+            Verificare che tutti i campi del formulario siano compilati
+            correttamente in quanto verranno utilizzati in tutti i prompt
+            generati.
+          </li>
+
+          <li>
+            Utilizzare descrizioni dettagliate e precise per ottenere prompt più
+            accurati, più dettagli vengono forniti migliore sarà il risultato.
+          </li>
+
+          <li>
+            Personalizzare ulteriormente i prompt generati in base alle esigenze
+            specifiche del progetto.
+          </li>
+        </ul>
+      </div>
+    </main>
+
+    <script></script>
+  </body>
+</html>

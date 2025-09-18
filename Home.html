@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Generatore Documento App</title>
+    <style>
+      :root {
+        --primary: #4361ee;
+        --primary-dark: #3a56d4;
+        --secondary: #7209b7;
+        --accent: #f72585;
+        --light: #f8f9fa;
+        --dark: #212529;
+        --gray: #6c757d;
+        --light-gray: #e9ecef;
+        --success: #4cc9f0;
+        --border-radius: 12px;
+        --box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
+        --gradient: linear-gradient(
+          135deg,
+          var(--primary) 0%,
+          var(--secondary) 100%
+        );
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html,
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: var(--dark);
+        background-color: #f9fafb;
+        padding: 0;
+        margin: 0;
+        height: 100%;
+      }
+
+      body {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      header {
+        padding: 1rem 0;
+        /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); */
+        flex-shrink: 0;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+        color: var(--dark);
+      }
+
+      .header-content {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .header-content > * {
+        min-width: 0;
+        flex-shrink: 1;
+      }
+
+      .header-content img {
+        height: 50px;
+        width: auto;
+      }
+
+      h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+
+      .card {
+        background: white;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        padding: 2rem;
+        margin-bottom: 0.5rem;
+        transition: var(--transition);
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        h1 {
+          font-size: 2rem;
+        }
+
+        @media (max-width: 480px) {
+          .container {
+            padding: 0 15px;
+          }
+
+          header {
+            padding: 1.5rem 0;
+          }
+
+          h1 {
+            font-size: 1.8rem;
+          }
+        }
+      }
+
+      h3 a {
+        background-color: #212529;
+        color: white;
+        text-decoration: none;
+        font-weight: lighter;
+        margin-right: 0.2em;
+        text-align: center;
+        padding: 0.3em 0.8em;
+        border-radius: 0.3em;
+      }
+
+      .main-container {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .animated-gradient {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, #c9c9c9, #e9ecef, #c9c9c9, #e9ecef);
+        background-size: 400% 400%;
+        animation: gradient 10s ease-in-out infinite;
+      }
+
+      @keyframes gradient {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      footer {
+        text-align: center;
+        padding: 1em 0;
+      }
+
+      .typewriter {
+        font-size: 24px;
+        line-height: 1.6;
+        white-space: pre-wrap;
+        overflow: hidden;
+        padding-right: 10px;
+        position: relative;
+        font-family: "Courier New", Courier, monospace;
+      }
+
+      .typewriter::after {
+        content: "";
+        position: absolute;
+        right: 0;
+        top: 0;
+        height: 100%;
+        width: 2px;
+        background-color: var(--dark);
+        animation: blink 1s steps(1) infinite;
+      }
+
+      @keyframes blink {
+        50% {
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <div class="header-content">
+          <div
+            style="
+              min-width: 100%;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+            "
+          >
+            <div style="display: flex; align-items: center; gap: 1em">
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/USI_Logo.svg/1200px-USI_Logo.svg.png"
+                alt="logo"
+              />
+              <h1>Rork App Prompt Generator</h1>
+            </div>
+            <h3>
+              <a href="Prompter.html">Prompt Generator</a>
+              <a href="History.html">Storico</a>
+              <a href="Guide.html">Guida all'utilizzo</a>
+            </h3>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="main-container">
+      <div class="gradient-background"></div>
+      <div id="typewriter" class="typewriter"></div>
+    </main>
+
+    <footer>
+      <div class="footer-content">
+        &copy; Università della Svizzera Italiana
+      </div>
+    </footer>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const mainElement = document.querySelector("main");
+        if (mainElement) {
+          mainElement.classList.add("animated-gradient");
+        }
+
+        const typewriterElement = document.getElementById("typewriter");
+
+        const text = "Welcome to USI Rork App Prompt Generator.";
+
+        let i = 0;
+        let typingInterval;
+
+        function typeWriter() {
+          if (i < text.length && !isPaused) {
+            // Gestisce i ritorni a capo
+            if (text.charAt(i) === "\n") {
+              typewriterElement.innerHTML += "<br>";
+            } else {
+              typewriterElement.innerHTML += text.charAt(i);
+            }
+            i++;
+
+            // Tempo di scrittura variabile per un effetto più realistico
+            const delay = Math.random() * 50 + 50; // tra 50 e 100 ms
+            setTimeout(typeWriter, delay);
+          } else {
+            // Assicurati che l'animazione del cursore continui dopo la scrittura
+            typewriterElement.classList.add("cursor-blink");
+          }
+        }
+
+        function startTyping() {
+          typewriterElement.innerHTML = "";
+          i = 0;
+          isPaused = false;
+          typeWriter();
+        }
+
+        startTyping();
+      });
+    </script>
+  </body>
+</html>

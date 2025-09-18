@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Testo a Macchina da Scrivere</title>
+    <style>
+      body {
+        background-color: #2c3e50;
+        color: #ecf0f1;
+        font-family: "Courier New", monospace;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        overflow: hidden;
+      }
+
+      .container {
+        width: 80%;
+        max-width: 800px;
+        background-color: #34495e;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      }
+
+      .typewriter {
+        font-size: 24px;
+        line-height: 1.6;
+        white-space: pre-wrap;
+        border-right: 3px solid #e74c3c;
+        overflow: hidden;
+        padding-right: 5px;
+        min-height: 200px;
+      }
+
+      .cursor-blink {
+        animation: blink 0.7s steps(1) infinite;
+      }
+
+      @keyframes blink {
+        50% {
+          border-color: transparent;
+        }
+      }
+
+      h1 {
+        text-align: center;
+        color: #e74c3c;
+        margin-top: 0;
+      }
+
+      .controls {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+        gap: 15px;
+      }
+
+      button {
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-family: "Courier New", monospace;
+        font-weight: bold;
+        transition: background-color 0.3s;
+      }
+
+      button:hover {
+        background-color: #c0392b;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>MACCHINA DA SCRIVERE</h1>
+      <div id="typewriter" class="typewriter"></div>
+      <div class="controls">
+        <button id="restart-btn">Riavvia</button>
+        <button id="pause-btn">Pausa/Riprendi</button>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const typewriterElement = document.getElementById("typewriter");
+        const restartButton = document.getElementById("restart-btn");
+        const pauseButton = document.getElementById("pause-btn");
+
+        const text =
+          "Ciao! Sono un effetto di testo che simula una macchina da scrivere.\n\n" +
+          "Questo testo viene scritto carattere per carattere, proprio come succedeva " +
+          "con le vecchie macchine da scrivere meccaniche.\n\n" +
+          "L'effetto è reso possibile grazie a JavaScript, che aggiunge un carattere " +
+          "alla volta con un piccolo ritardo tra uno e l'altro.\n\n" +
+          "Prova a premere il pulsante 'Riavvia' per vedere di nuovo l'effetto dall'inizio, " +
+          "oppure 'Pausa/Riprendi' per mettere in pausa la scrittura!";
+
+        let i = 0;
+        let isPaused = false;
+        let typingInterval;
+
+        function typeWriter() {
+          if (i < text.length && !isPaused) {
+            // Gestisce i ritorni a capo
+            if (text.charAt(i) === "\n") {
+              typewriterElement.innerHTML += "<br>";
+            } else {
+              typewriterElement.innerHTML += text.charAt(i);
+            }
+            i++;
+
+            // Scorri in basso se necessario
+            typewriterElement.scrollTop = typewriterElement.scrollHeight;
+
+            // Tempo di scrittura variabile per un effetto più realistico
+            const delay = Math.random() * 50 + 50; // tra 50 e 100 ms
+            setTimeout(typeWriter, delay);
+          }
+        }
+
+        function startTyping() {
+          typewriterElement.innerHTML = "";
+          i = 0;
+          isPaused = false;
+          typeWriter();
+        }
+
+        function togglePause() {
+          isPaused = !isPaused;
+          if (!isPaused) {
+            typeWriter();
+          }
+        }
+
+        // Inizia la scrittura quando la pagina è caricata
+        startTyping();
+
+        // Aggiungi event listeners per i pulsanti
+        restartButton.addEventListener("click", startTyping);
+        pauseButton.addEventListener("click", togglePause);
+      });
+    </script>
+  </body>
+</html>
